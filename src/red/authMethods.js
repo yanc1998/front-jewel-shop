@@ -8,8 +8,10 @@ export function loadToken() {
     return localStorage.getItem("Token")
 }
 
-export function isLogin() {
+export function isLogin(state) {
+
     const token = loadToken()
+    state.token = token
 
     if (token != "")
         return true

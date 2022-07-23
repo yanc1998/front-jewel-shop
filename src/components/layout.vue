@@ -85,10 +85,14 @@
               <span
                   class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
             </a>
-            <a class="nav-icon position-relative text-decoration-none" href="#">
-              <i class="fa fa-fw fa-user text-dark mr-3"></i>
+            <a v-if="!isLogin" class="nav-icon position-relative text-decoration-none" href="#">
+              <router-link to="/login"><i class="fa fa-fw fa-user text-dark mr-3"></i></router-link>
+
               <span
                   class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
+            </a>
+            <a v-if="isLogin" class="nav-icon position-relative text-decoration-none" @click="logOut">
+              <i class="fa fa-fw fa-user-slash text-dark mr-3">LogOut</i>
             </a>
           </div>
         </div>
@@ -101,8 +105,25 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
+import {loadToken} from "@/red/authMethods";
+
 export default {
-  name: "layout"
+  name: "layout",
+  methods: {
+    ...mapActions(['logOut', 'setToken'])
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.token != ''
+    },
+  }
+  , created() {
+    const token = loadToken()
+    this.setToken(token)
+  }
+
 }
 </script>
 

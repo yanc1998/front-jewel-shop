@@ -102,7 +102,7 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <a href="shop-single.html" class="h3 text-decoration-none">{{item.name}}</a>
+                  <a href="shop-single.html" class="h3 text-decoration-none">{{ item.name }}</a>
                   <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>M/L/X/XL</li>
                     <li class="pt-2">
@@ -122,7 +122,7 @@
                       <i class="text-muted fa fa-star"></i>
                     </li>
                   </ul>
-                  <p class="text-center mb-0">${{item.price}}</p>
+                  <p class="text-center mb-0">${{ item.price }}</p>
                 </div>
               </div>
             </div>
@@ -272,6 +272,7 @@
 <script>
 import {Comunication} from '@/red/comunicationMethods'
 
+const comunication = new Comunication('http://localhost:3001/')
 export default {
   name: "Shop",
   data() {
@@ -289,7 +290,6 @@ export default {
   },
   methods: {
     async findCategories() {
-      const comunication = new Comunication('http://localhost:3001/')
       const body = {
         pageParams: {
           pageNum: this.pageNum,
@@ -307,7 +307,6 @@ export default {
       this.categories = data.items
     },
     async findSubCategories() {
-      const comunication = new Comunication('http://localhost:3001/')
       const body = {
         pageParams: {
           pageNum: this.pageNum,
@@ -325,7 +324,6 @@ export default {
       this.subcategories = data.items
     },
     async findProducts() {
-      const comunication = new Comunication('http://localhost:3001/')
       const body = {
         pageParams: {
           pageNum: this.pageNum,
