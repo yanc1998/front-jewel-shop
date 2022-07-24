@@ -59,6 +59,23 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "about" */ '../components/auth/register/confirmRegister')
+    },
+    {
+        path: '/add-category',
+        name: 'add-category',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../components/shop/categories/addCategories')
+    },
+    {
+        path: '/add-subcategory/:id',
+        name: 'add-subcategory',
+        props: true,
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../components/shop/subcategories/addSubcategories')
     }
 ]
 

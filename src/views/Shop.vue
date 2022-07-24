@@ -25,7 +25,12 @@
 
         <div class="col-lg-3">
 
+          <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+
+            <router-link to="/add-category"><i class="fa fa-fw fa-plus-circle mt-1"></i></router-link>
+          </a>
           <h1 class="h2 pb-4">Categories</h1>
+
           <ul class="list-unstyled templatemo-accordion">
 
             <li class="pb-3" v-for="item in this.categories" v-bind:key="item.id">
@@ -46,6 +51,11 @@
             </li>
           </ul>
 
+
+          <a v-if="this.categoryId" class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+            <router-link :to="'/add-subcategory/'+categoryId"><i class="fa fa-fw fa-plus-circle mt-1"></i>
+            </router-link>
+          </a>
           <h1 class="h2 pb-4">Subcategories</h1>
           <ul class="list-unstyled templatemo-accordion">
             <li class="pb-3" v-for="item in this.subcategories" v-bind:key="item.id">
