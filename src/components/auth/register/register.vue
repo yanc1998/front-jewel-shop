@@ -65,12 +65,12 @@ export default {
       let result = await comunication.post('auth/register', body)
 
       if (result.status != 200) {
-        const error = await result.json()
+        const error = result.data
         this.errors.push(error)
         console.log(this.errors)
         return
       }
-      result = await result.json()
+      result = result.data
       console.log(result)
       await this.$router.push(`/confirm-register/${result._id.value}`)
     }

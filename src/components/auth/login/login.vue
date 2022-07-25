@@ -67,7 +67,7 @@ export default {
         this.errors.push(result.data)
         return
       }
-      result = await result.json()
+      result = result.data
       console.log(result)
       //saveToken(result.token)
       this.setToken(result.token)

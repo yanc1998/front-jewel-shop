@@ -90,8 +90,14 @@
                   <option>A to Z</option>
                   <option>Item</option>
                 </select>
+                <a v-if="this.subcategoryId" class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                   href="#">
+                  <router-link :to="'/add-product/'+subcategoryId"><i class="fa fa-fw fa-plus-circle mt-1"></i>
+                  </router-link>
+                </a>
               </div>
             </div>
+
           </div>
           <div class="row">
             <div class="col-md-4" v-for="item in this.products" v-bind:key="item.id">
@@ -310,10 +316,10 @@ export default {
       }
       const response = await comunication.post('category', body)
       if (response.status != 200) {
-        this.errors.push(await response.json())
+        this.errors.push(await response.data)
         return
       }
-      const data = await response.json()
+      const data = response.data
       this.categories = data.items
     },
     async findSubCategories() {
@@ -327,10 +333,10 @@ export default {
       }
       const response = await comunication.post('subcategory', body)
       if (response.status != 200) {
-        this.errors.push(await response.json())
+        this.errors.push(response.data)
         return
       }
-      const data = await response.json()
+      const data = response.data
       this.subcategories = data.items
     },
     async findProducts() {
@@ -344,10 +350,10 @@ export default {
       }
       const response = await comunication.post('product', body)
       if (response.status != 200) {
-        this.errors.push(await response.json())
+        this.errors.push(response.data)
         return
       }
-      const data = await response.json()
+      const data = response.data
       this.products = data.items
       this.totalPages = data.totalPages
       this.pageNum = data.currentPage
