@@ -78,23 +78,27 @@ export default {
         subcategoryId: this.$route.params['id']
       })
       comunication.setHeaders({'content-type': 'multipart/form-data; '})
-      let result = await comunication.post('product/create', data)
 
-      if (result.status != 200) {
-        this.errors.push(result.data)
-        return
+      try {
+
+        let result = await comunication.post('product/create', data)
+
+        if (result.status != 200) {
+          this.errors.push(result.data)
+          return
+        }
+        await this.$router.back()
+      } catch (error) {
+        this.errors.push({
+          name: error.name,
+          description: error.description
+        })
       }
-      await this.$router.back()
     },
     getImage(event) {
       //Asignamos la imagen a  nuestra data
       this.file = event.target.files[0];
-    },
-    createImage(file) {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      return reader
-    },
+    }
   }
 }
 </script>

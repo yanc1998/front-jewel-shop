@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       name: '',
-      description: ''
+      description: '',
+      errors: []
     }
   },
   methods: {
@@ -53,13 +54,22 @@ export default {
         name: this.name,
         description: this.description
       }
-      let result = await comunication.post('category/create', body)
-
-      if (result.status != 200) {
-        this.errors.push(result.data)
-        return
+      try {
+        comunication.setToken(this.$store.state.token)
+        console.log(comunication.headers)
+        let result = await comunication.post('category/create', body)
+        if (result.status != 200) {
+          this.errors.push(result.data)
+          return
+        }
+        await this.$router.back()
+      } catch (error) {
+        this.errors.push({
+          name: error.name,
+          description: error.description
+        })
       }
-      await this.$router.back()
+
     }
   }
 }

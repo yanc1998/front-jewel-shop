@@ -25,8 +25,7 @@
 
         <div class="col-lg-3">
 
-          <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-
+          <a v-if="isAdmin" class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
             <router-link to="/add-category"><i class="fa fa-fw fa-plus-circle mt-1"></i></router-link>
           </a>
           <h1 class="h2 pb-4">Categories</h1>
@@ -52,7 +51,8 @@
           </ul>
 
 
-          <a v-if="this.categoryId" class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+          <a v-if="this.categoryId && this.isAdmin"
+             class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
             <router-link :to="'/add-subcategory/'+categoryId"><i class="fa fa-fw fa-plus-circle mt-1"></i>
             </router-link>
           </a>
@@ -90,7 +90,8 @@
                   <option>A to Z</option>
                   <option>Item</option>
                 </select>
-                <a v-if="this.subcategoryId" class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                <a v-if="this.subcategoryId && this.isAdmin"
+                   class="collapsed d-flex justify-content-between h3 text-decoration-none"
                    href="#">
                   <router-link :to="'/add-product/'+subcategoryId"><i class="fa fa-fw fa-plus-circle mt-1"></i>
                   </router-link>
@@ -118,7 +119,10 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <a href="shop-single.html" class="h3 text-decoration-none">{{ item.name }}</a>
+                  <router-link :to="/product-details/+item.id" class="h3 text-decoration-none">{{
+                      item.name
+                    }}
+                  </router-link>
                   <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                     <li>M/L/X/XL</li>
                     <li class="pt-2">
@@ -287,6 +291,7 @@
 
 <script>
 import {Comunication} from '@/red/comunicationMethods'
+import {isAdmin} from "@/red/authMethods";
 
 const comunication = new Comunication('http://localhost:3001/')
 export default {
@@ -301,7 +306,8 @@ export default {
       errors: [],
       pageNum: 1,
       pageLimit: 6,
-      totalPages: 1
+      totalPages: 1,
+      isAdmin: false
     }
   },
   methods: {
@@ -379,8 +385,10 @@ export default {
       }
     }
   },
-  created() {
-    this.findCategories()
+  async created() {
+    await this.findCategories()
+    this.isAdmin = await isAdmin()
+    console.log(this.isAdmin)
   }
 
 }

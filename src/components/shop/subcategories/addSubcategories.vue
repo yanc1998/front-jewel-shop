@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       name: '',
-      description: ''
+      description: '',
+      errors: []
     }
   },
   methods: {
@@ -54,13 +55,22 @@ export default {
         description: this.description,
         categoryId: this.$route.params['id']//poner lo que se pasa en la ruta
       }
-      let result = await comunication.post('subcategory/create', body)
+      try {
 
-      if (result.status != 200) {
-        this.errors.push(result.data)
-        return
+
+        let result = await comunication.post('subcategory/create', body)
+
+        if (result.status != 200) {
+          this.errors.push(result.data)
+          return
+        }
+        await this.$router.back()
+      } catch (error) {
+        this.errors.push({
+          name: error.name,
+          description: error.description
+        })
       }
-      await this.$router.back()
     }
   }
 }

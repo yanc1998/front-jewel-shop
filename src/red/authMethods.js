@@ -25,13 +25,14 @@ export function logOut() {
 
 export async function isAdmin() {
     const comunication = new Comunication('http://localhost:3001/')
-    if (!isLogin()) {
-        return false
-    }
     comunication.setToken(loadToken())
-    const admin = await comunication.post('check-admin')
-    if (admin.status != 200) {
+    try {
+        const admin = await comunication.post('auth/check-admin')
+        if (admin.status != 200 && admin.status != 201) {
+            return false
+        }
+        return true
+    } catch (error) {
         return false
     }
-    return true
 }

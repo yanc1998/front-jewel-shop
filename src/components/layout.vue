@@ -91,7 +91,7 @@
               <span
                   class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
             </a>
-            <a v-if="isLogin" class="nav-icon position-relative text-decoration-none" @click="logOut">
+            <a v-if="isLogin" class="nav-icon position-relative text-decoration-none" @click="_logOut">
               <i class="fa fa-fw fa-user-slash text-dark mr-3">LogOut</i>
             </a>
           </div>
@@ -112,7 +112,11 @@ import {loadToken} from "@/red/authMethods";
 export default {
   name: "layout",
   methods: {
-    ...mapActions(['logOut', 'setToken'])
+    ...mapActions(['logOut', 'setToken']),
+    _logOut() {
+      this.logOut()
+      this.$router.push('/')
+    }
   },
   computed: {
     isLogin() {

@@ -50,7 +50,7 @@ export class Comunication {
     }
 
     setToken(token) {
-        this.headers.Authorization = `<Bearer> ${token}`
+        this.headers.Authorization = `Bearer ${token}`
     }
 }
 
