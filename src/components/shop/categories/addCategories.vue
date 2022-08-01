@@ -30,8 +30,9 @@
 
 <script>
 import {Comunication} from '@/red/comunicationMethods'
+import endpoints from "@/red/endpoints";
 
-const comunication = new Comunication('http://localhost:3001/')
+const comunication = new Comunication(endpoints.base_url)
 export default {
   name: "addCategories",
   data() {

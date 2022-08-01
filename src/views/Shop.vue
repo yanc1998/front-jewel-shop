@@ -25,7 +25,7 @@
 
         <div class="col-lg-3">
 
-          <a v-if="isAdmin" class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+          <a v-if="isAdmin" class="collapsed d-flex justify-content-between h3 text-decoration-none">
             <router-link to="/add-category"><i class="fa fa-fw fa-plus-circle mt-1"></i></router-link>
           </a>
           <h1 class="h2 pb-4">Categories</h1>
@@ -33,20 +33,10 @@
           <ul class="list-unstyled templatemo-accordion">
 
             <li class="pb-3" v-for="item in this.categories" v-bind:key="item.id">
-              <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+              <a class="collapsed d-flex justify-content-between h3 text-decoration-none" @click="setCategory(item.id)">
                 {{ item.name }}
                 <i class="fa fa-fw fa-chevron-circle-down mt-1" @click="setCategory(item.id)"></i>
               </a>
-
-              <ul class="collapse">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                        aria-controls="collapseOne">
-                  Collapsible Group Item #1
-                </button>
-                <li>
-                  <a class="text-decoration-none">aaa</a>
-                </li>
-              </ul>
             </li>
           </ul>
 
@@ -59,7 +49,8 @@
           <h1 class="h2 pb-4">Subcategories</h1>
           <ul class="list-unstyled templatemo-accordion">
             <li class="pb-3" v-for="item in this.subcategories" v-bind:key="item.id">
-              <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
+              <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                 @click="setSubCategory(item.id)">
                 {{ item.name }}
                 <i class="fa fa-fw fa-chevron-circle-down mt-1" @click="setSubCategory(item.id)"></i>
               </a>
@@ -109,12 +100,20 @@
                   <div
                       class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
-                      <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a>
+                      <li>
+                        <router-link :to="/product-details/+item.id" class="btn btn-success text-white"><i
+                            class="far fa-heart"></i></router-link>
                       </li>
-                      <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i class="far fa-eye"></i></a>
+                      <li>
+                        <router-link :to="/product-details/+item.id" class="btn btn-success text-white mt-2"><i
+                            class="far fa-eye"></i>
+                        </router-link>
                       </li>
-                      <li><a class="btn btn-success text-white mt-2" href="shop-single.html"><i
-                          class="fas fa-cart-plus"></i></a></li>
+                      <li>
+                        <router-link :to="/product-details/+item.id" class="btn btn-success text-white mt-2"><i
+                            class="fas fa-cart-plus"></i>
+                        </router-link>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -292,8 +291,9 @@
 <script>
 import {Comunication} from '@/red/comunicationMethods'
 import {isAdmin} from "@/red/authMethods";
+import endpoints from "@/red/endpoints";
 
-const comunication = new Comunication('http://localhost:3001/')
+const comunication = new Comunication(endpoints.base_url)
 export default {
   name: "Shop",
   data() {
@@ -362,7 +362,7 @@ export default {
       const data = response.data
       this.products = data.items
       this.totalPages = data.totalPages
-      this.pageNum = data.currentPage
+      this.pageNum = data.currentPage > 0 ? data.currentPage : this.pageNum
     },
     async setCategory(categoryId) {
       this.categoryId = categoryId

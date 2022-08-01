@@ -45,8 +45,11 @@
 
 <script>
 import {Comunication} from '@/red/comunicationMethods'
+import endpoints from "@/red/endpoints";
+import {loadToken} from "@/red/authMethods";
 
-const comunication = new Comunication('http://localhost:3001/')
+const comunication = new Comunication(endpoints.base_url)
+
 export default {
   name: "addProducts",
   data() {
@@ -78,7 +81,7 @@ export default {
         subcategoryId: this.$route.params['id']
       })
       comunication.setHeaders({'content-type': 'multipart/form-data; '})
-
+      comunication.setToken(loadToken())
       try {
 
         let result = await comunication.post('product/create', data)

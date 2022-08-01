@@ -33,12 +33,10 @@ export class Comunication {
         return data
     }
 
-    async get(route, paramName, param) {
-        const data = await fetch(this.base_path + route + `/${paramName}:${param}`, {
-            method: 'GET',
+    async get(route, param) {
+        const data = await axios.get(this.base_path + route + `/${param}`, {
             headers: this.headers
         })
-
         return data
     }
 

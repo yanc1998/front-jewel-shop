@@ -10,17 +10,18 @@
         </div>
         <div class="col-md-7">
           <div class="single-product-content">
-            <h3>Green apples have polyphenols</h3>
-            <p class="single-product-pricing"><span>Per Kg</span> $50</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta sint dignissimos, rem commodi cum
-              voluptatem quae reprehenderit repudiandae ea tempora incidunt ipsa, quisquam animi perferendis eos eum
-              modi! Tempora, earum.</p>
+            <h3>{{ this.product.name }}</h3>
+            <p class="single-product-pricing"><strong>Price:</strong> ${{ this.product.price }}
+            <p/>
+            <p class="single-product-pricing"><strong>Count:</strong> {{ this.product.count }}
+            <p/>
+            <p>{{ this.product.description }}</p>
             <div class="single-product-form">
               <form action="index.html">
                 <input type="number" placeholder="0">
               </form>
               <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-              <p><strong>Categories: </strong>Fruits, Organic</p>
+
             </div>
             <h4>Share:</h4>
             <ul class="product-share">
@@ -38,12 +39,39 @@
 </template>
 
 <script>
+import {Comunication} from '@/red/comunicationMethods'
+import endpoints from "@/red/endpoints";
+
+const comunication = new Comunication(endpoints.base_url)
 export default {
   name: "productsDetails",
-  methods: {
-    getProduct() {
-      const id = this.$route.params['id']
+  data() {
+    return {
+      errors: [],
+      product: {
+        name: '',
+        count: 0,
+        price: 0,
+        description: ''
+      }
     }
+  },
+  methods: {
+    async getProduct() {
+      const id = this.$route.params['id']
+      const response = await comunication.get('product', id)
+      const data = response.data
+      if (response.status != 200) {
+        this.errors.push({
+          name: data.name,
+          description: data.description
+        })
+      }
+      this.product = data
+    }
+  },
+  created() {
+    this.getProduct()
   }
 }
 </script>

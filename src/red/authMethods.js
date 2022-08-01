@@ -1,4 +1,5 @@
 import {Comunication} from "@/red/comunicationMethods";
+import endpoints from "@/red/endpoints";
 
 export function saveToken(token) {
     localStorage.setItem("Token", token)
@@ -24,7 +25,8 @@ export function logOut() {
 }
 
 export async function isAdmin() {
-    const comunication = new Comunication('http://localhost:3001/')
+
+    const comunication = new Comunication(endpoints.base_url)
     comunication.setToken(loadToken())
     try {
         const admin = await comunication.post('auth/check-admin')

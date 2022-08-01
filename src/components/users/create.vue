@@ -17,12 +17,19 @@
         </div>
         <div class="mb-3">
           <label>Username</label>
-          <input v-model="username" type="text" class="form-control mt-1" id="subject" name="subject"
+          <input v-model="username" type="text" class="form-control mt-1" id="username" name="username"
                  placeholder="Username">
         </div>
+
+        <div class="mb-3">
+          <label>Status</label>
+          <input v-model="status" type="text" class="form-control mt-1" id="status" name="subject"
+                 placeholder="Status">
+        </div>
+
         <div class="row">
           <div class="col text-end mt-2">
-            <button class="btn btn-success btn-lg px-3" @click="this.register">Register</button>
+            <button class="btn btn-success btn-lg px-3" @click="this.create">Create</button>
           </div>
         </div>
 
@@ -34,23 +41,20 @@
 </template>
 
 <script>
-import {Comunication} from "@/red/comunicationMethods";
-import endpoints from "@/red/endpoints";
-
-const comunication = new Comunication(endpoints.base_url)
-
 export default {
-  name: "register",
+  name: "create",
   data() {
     return {
+      roles: [],
+      status: '',
       email: '',
       password: '',
       username: '',
       errors: []
     }
   }, methods: {
-    async register() {
-      if (this.email == '' || this.password == '' || this.username == '') {
+    async create() {
+      if (this.email == '' || this.password == '' || this.username == '' || this.status == '') {
         this.errors.push({
           message: 'register error',
           code: 400
@@ -60,10 +64,12 @@ export default {
       const body = {
         email: this.email,
         password: this.password,
-        username: this.username
+        username: this.username,
+        status: this.status,
+        roles: this.roles
       }
       console.log(body)
-      let result = await comunication.post('auth/register', body)
+      let result = await comunication.post('user/create', body)
 
       if (result.status != 200) {
         const error = result.data
@@ -76,7 +82,6 @@ export default {
       await this.$router.push(`/confirm-register/${result._id.value}`)
     }
   }
-
 }
 </script>
 

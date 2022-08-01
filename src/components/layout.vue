@@ -57,6 +57,17 @@
                   <router-link to="/Shop">Shop</router-link>
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a class="nav-link">
+                  <router-link to="/user/create">Create User</router-link>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">
+                  <router-link to="/user/list">List User</router-link>
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="contact.html">Contact</a>
               </li>
