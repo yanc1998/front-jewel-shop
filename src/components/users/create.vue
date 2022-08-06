@@ -14,18 +14,29 @@
             <input v-model="password" type="text" class="form-control mt-1" id="password" name="password"
                    placeholder="Password">
           </div>
-        </div>
-        <div class="mb-3">
-          <label>Username</label>
-          <input v-model="username" type="text" class="form-control mt-1" id="username" name="username"
-                 placeholder="Username">
+          <div class="form-group col-md-6 mb-3">
+            <label>Username</label>
+            <input v-model="username" type="text" class="form-control mt-1" id="username" name="username"
+                   placeholder="Username">
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label>Status</label>
+            <select v-model="status" class="form-control mt-1">
+              <option>Pending</option>
+              <option>Register</option>
+            </select>
+
+          </div>
+
+          <div class="form-group mb-3">
+            <label>Role</label>
+            <select v-model="role" class="form-control mt-1">
+              <option>Admin</option>
+              <option>client</option>
+            </select>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label>Status</label>
-          <input v-model="status" type="text" class="form-control mt-1" id="status" name="subject"
-                 placeholder="Status">
-        </div>
 
         <div class="row">
           <div class="col text-end mt-2">
@@ -41,11 +52,15 @@
 </template>
 
 <script>
+import {Comunication} from "@/red/comunicationMethods";
+import endpoints from "@/red/endpoints";
+
+const comunication = new Comunication(endpoints.base_url)
 export default {
   name: "create",
   data() {
     return {
-      roles: [],
+      role: '',
       status: '',
       email: '',
       password: '',
@@ -54,7 +69,7 @@ export default {
     }
   }, methods: {
     async create() {
-      if (this.email == '' || this.password == '' || this.username == '' || this.status == '') {
+      if (this.email == '' || this.password == '' || this.username == '' || this.status == '' || this.role == '') {
         this.errors.push({
           message: 'register error',
           code: 400
@@ -66,9 +81,10 @@ export default {
         password: this.password,
         username: this.username,
         status: this.status,
-        roles: this.roles
+        roles: [this.role]
       }
       console.log(body)
+      comunication.setToken(this.$store.state.token)
       let result = await comunication.post('user/create', body)
 
       if (result.status != 200) {
@@ -79,7 +95,7 @@ export default {
       }
       result = result.data
       console.log(result)
-      await this.$router.push(`/confirm-register/${result._id.value}`)
+      await this.$router.back()
     }
   }
 }

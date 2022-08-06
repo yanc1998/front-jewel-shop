@@ -16,17 +16,22 @@
         </div>
 
         <div class="mb-3">
-          <label>Roles</label>
-          <input v-model="user.roles" type="text" class="form-control mt-1" id="roles" name="username"
-                 placeholder="Username">
-        </div>
-
-
-        <div class="mb-3">
           <label>Status</label>
-          <input v-model="user.status" type="text" class="form-control mt-1" id="status" name="subject"
-                 placeholder="Status">
+          <select v-model="user.status" class="form-control mt-1">
+            <option>Pending</option>
+            <option>Register</option>
+          </select>
+
         </div>
+        <div class="mb-3">
+          <label>Role</label>
+          <select v-model="user.role" class="form-control mt-1">
+            <option>client</option>
+            <option>Admin</option>
+          </select>
+
+        </div>
+
 
         <div class="row">
           <div class="col text-end mt-2">
@@ -53,7 +58,7 @@ export default {
   data() {
     return {
       user: {
-        roles: [],
+        role: '',
         status: '',
         email: '',
         username: '',
@@ -75,7 +80,7 @@ export default {
         data: {
           username: this.user.username,
           status: this.user.status,
-          roles: this.user.roles
+          roles: [this.user.role]
         }
       }
       console.log(body)
@@ -101,6 +106,7 @@ export default {
         })
       }
       this.user = data
+      this.user.role = data.roles[0]
       console.log(this.user)
     }
   },

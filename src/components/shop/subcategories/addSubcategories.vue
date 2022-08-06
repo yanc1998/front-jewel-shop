@@ -58,7 +58,7 @@ export default {
       }
       try {
 
-
+        comunication.setToken(this.$store.state.token)
         let result = await comunication.post('subcategory/create', body)
 
         if (result.status != 200) {
