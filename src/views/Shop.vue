@@ -96,7 +96,7 @@
               <div class="card mb-4 product-wap rounded-0">
 
                 <div class="card rounded-0">
-                  <img class="card-img rounded-0 img-fluid" src="assets/img/shop_01.jpg">
+                  <img class="card-img rounded-0 img-fluid" :src="getImage(item)">
                   <div
                       class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                     <ul class="list-unstyled">
@@ -383,6 +383,10 @@ export default {
         this.pageNum -= 1
         await this.findProducts()
       }
+    },
+    getImage(item) {
+      console.log(item.file.url)
+      return item.file.url
     }
   },
   async created() {
