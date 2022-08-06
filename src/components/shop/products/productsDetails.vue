@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-5">
           <div class="single-product-img">
-            <img src="/assets2/img/products/product-img-5.jpg" alt="">
+            <img :src="this.product.file.url" alt="">
           </div>
         </div>
         <div class="col-md-7">
@@ -52,7 +52,8 @@ export default {
         name: '',
         count: 0,
         price: 0,
-        description: ''
+        description: '',
+        file: {}
       }
     }
   },
