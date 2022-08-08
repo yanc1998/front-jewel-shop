@@ -14,6 +14,7 @@
     "fs-extra": "^10.1.0",
     "graceful-fs": "^4.2.10",
     "jsonfile": "^6.1.0",
+    "serve": "^14.0.1",
     "universalify": "^2.0.0",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
