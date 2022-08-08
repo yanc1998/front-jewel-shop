@@ -1,1 +1,1 @@
-web: serve -s dist
+web: yarn build && serve -s dist
