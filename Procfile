@@ -1,1 +1,1 @@
-web: npm build && serve -s dist
+web: yarn build && serve -s dist
