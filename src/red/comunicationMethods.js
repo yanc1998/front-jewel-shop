@@ -7,12 +7,11 @@ export class Comunication {
 
     constructor(base_path) {
         this.base_path = base_path
-        this.headers = {'Content-Type': 'application/json'}
+        this.headers = {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
     }
 
     async post(route, body) {
         const complete_route = this.base_path + route
-        console.log(complete_route)
         const data = await axios.post(complete_route, body, {
             headers: this.headers
         })
@@ -35,6 +34,14 @@ export class Comunication {
 
     async get(route, param) {
         const data = await axios.get(this.base_path + route + `/${param}`, {
+            headers: this.headers
+        })
+        return data
+    }
+
+    async put(route, body) {
+        const complete_route = this.base_path + route
+        const data = await axios.put(complete_route, body, {
             headers: this.headers
         })
         return data

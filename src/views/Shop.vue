@@ -132,6 +132,8 @@
                       <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
                     </li>
                   </ul>
+                  <router-link :to="/product-update/+item.id" class="h3 text-decoration-none">Update
+                  </router-link>
                   <ul class="list-unstyled d-flex justify-content-center mb-1">
                     <li>
                       <i class="text-warning fa fa-star"></i>
@@ -351,7 +353,16 @@ export default {
           pageNum: this.pageNum,
           pageLimit: this.pageLimit
         },
-        filter: {subcategoryId: this.subcategoryId}
+        filter: {
+          filter: {
+            $and: {
+              subcategoryId: this.subcategoryId
+            }
+          },
+          relations: {
+            file: {}
+          }
+        }
 
       }
       const response = await comunication.post('product', body)
@@ -386,7 +397,7 @@ export default {
     },
     getImage(item) {
       console.log(item.file.url)
-      return item.file.url
+      return "http://localhost:3001" + item.file.url
     }
   },
   async created() {

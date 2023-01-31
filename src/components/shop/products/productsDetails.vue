@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-md-5">
           <div class="single-product-img">
-            <img :src="this.product.file.url" alt="">
+            <img :src="getImage(this.product)" alt="">
           </div>
         </div>
         <div class="col-md-7">
@@ -62,6 +62,7 @@ export default {
       const id = this.$route.params['id']
       const response = await comunication.get('product', id)
       const data = response.data
+      console.log(data)
       if (response.status != 200) {
         this.errors.push({
           name: data.name,
@@ -69,6 +70,10 @@ export default {
         })
       }
       this.product = data
+    },
+    getImage(item) {
+      console.log(item.file.url)
+      return "http://localhost:3001" + item.file.url
     }
   },
   created() {

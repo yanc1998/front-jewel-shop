@@ -6,21 +6,23 @@
         <div class="row">
           <div class="form-group col-md-6 mb-3">
             <label>Name</label>
-            <input v-model="name" type="email" class="form-control mt-1" id="name" name="name" placeholder="Name">
+            <input v-model="product.name" type="email" class="form-control mt-1" id="name" name="name"
+                   placeholder="Name">
           </div>
           <div class="form-group col-md-6 mb-3">
             <label>Description</label>
-            <input v-model="description" type="text" class="form-control mt-1" id="description" name="description"
+            <input v-model="product.description" type="text" class="form-control mt-1" id="description"
+                   name="description"
                    placeholder="Description">
           </div>
           <div class="form-group col-md-6 mb-3">
             <label>Count</label>
-            <input v-model="count" type="text" class="form-control mt-1" id="count" name="count"
+            <input v-model="product.count" type="text" class="form-control mt-1" id="count" name="count"
                    placeholder="Count">
           </div>
           <div class="form-group col-md-6 mb-3">
             <label>Price</label>
-            <input v-model="price" type="text" class="form-control mt-1" id="price" name="price"
+            <input v-model="product.price" type="text" class="form-control mt-1" id="price" name="price"
                    placeholder="Price">
           </div>
           <div class="form-group col-md-6 mb-3">
@@ -32,7 +34,7 @@
 
         <div class="row">
           <div class="col text-end mt-2">
-            <button class="btn btn-success btn-lg px-3" @click="this.createProduct">Create</button>
+            <button class="btn btn-success btn-lg px-3" @click="this.updateProduct">Update</button>
           </div>
         </div>
 
@@ -51,40 +53,57 @@ import {loadToken} from "@/red/authMethods";
 const comunication = new Comunication(endpoints.base_url)
 
 export default {
-  name: "addProducts",
+  name: "updateProduct",
   data() {
     return {
-      name: '',
-      description: '',
-      price: 0,
-      count: 0,
+      product: {
+        id: '',
+        name: '',
+        description: '',
+        price: 0,
+        count: 0,
+        file: null,
+      },
       image: null,
-      file: null,
       errors: []
     }
   },
   methods: {
-    async createProduct() {
-      if (!this.name || !this.description || !this.file) {
+    async getProduct() {
+      const id = this.$route.params['id']
+      const response = await comunication.get('product', id)
+      const data = response.data
+      if (response.status != 200) {
         this.errors.push({
-          message: 'create product error',
+          name: data.name,
+          description: data.description
+        })
+      }
+      this.product = data
+    },
+    async updateProduct() {
+      if (!this.product.name || !this.product.description || !this.product.file) {
+        this.errors.push({
+          message: 'update product error',
           code: 400
         })
+        console.log(this.errors)
         return
       }
+
       let data = comunication.addFormData({
-        file: this.file,
-        name: this.name,
-        description: this.description,
-        price: this.price,
-        count: this.count,
-        subcategoryId: this.$route.params['id']
+        file: this.product.file,
+        name: this.product.name,
+        description: this.product.description,
+        price: this.product.price,
+        count: this.product.count,
+        productId: this.product.id
       })
       comunication.setHeaders({'content-type': 'multipart/form-data; ', 'Access-Control-Allow-Origin': '*'})
       comunication.setToken(loadToken())
       try {
 
-        let result = await comunication.post('product/create', data)
+        let result = await comunication.put('product', data)
 
         if (result.status != 200) {
           this.errors.push(result.data)
@@ -101,8 +120,11 @@ export default {
     getImage(event) {
       const file = event.target.files[0];
       //Asignamos la imagen a  nuestra data
-      this.file = file
+      this.product.file = file
     }
+  },
+  created() {
+    this.getProduct()
   }
 }
 </script>
